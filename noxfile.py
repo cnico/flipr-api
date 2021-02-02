@@ -2,7 +2,6 @@
 import shutil
 import sys
 from pathlib import Path
-from textwrap import dedent
 
 import nox
 import nox_poetry.patch
@@ -20,6 +19,7 @@ nox.options.sessions = (
     "xdoctest",
     "docs-build",
 )
+
 
 @nox.session(name="pre-commit", python="3.9")
 def precommit(session: Session) -> None:
@@ -46,8 +46,8 @@ def safety(session: Session) -> None:
     """Scan dependencies for insecure packages."""
     requirements = nox_poetry.export_requirements(session)
     session.install("safety")
-    #session.run("safety", "check", f"--file={requirements}", "--bare")
-    session.run("safety", "check", f"--file={requirements}") # detailed output
+    # session.run("safety", "check", f"--file={requirements}", "--bare")
+    session.run("safety", "check", f"--file={requirements}")  # detailed output
 
 
 @nox.session(python=python_versions)
@@ -117,4 +117,3 @@ def docs_build(session: Session) -> None:
         shutil.rmtree(build_dir)
 
     session.run("sphinx-build", *args)
-

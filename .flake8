@@ -1,5 +1,5 @@
 [flake8]
 max-line-length = 120
-per-file-ignores = 
+per-file-ignores =
     tests/*: S101,DAR101,E501,S105
     noxfile.py: DAR101

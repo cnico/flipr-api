@@ -4,7 +4,7 @@ Client Python pour l'API Météo-France. | Python client for Météo-France API.
 
 |PyPI| |GitHub Release| |Python Version| |License| |Black|
 
-|Read the Docs| |Tests| |Codecov| |GitHub Activity| 
+|Read the Docs| |Tests| |Codecov| |GitHub Activity|
 
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/flipr-api
@@ -87,7 +87,7 @@ Description En
 Flipr is a connect object that you put in your swimming pool in order to measure chemical values of it.
 This Python package allows to communicate with the public REST API `Flipr <https://apis.goflipr.com/Help>`_.
 
-This client allows to : 
+This client allows to :
 * Retrieve the id of your flipr
 * Get the latest measure of your Flipr (data of temperature, ph, chlore and redox).
 

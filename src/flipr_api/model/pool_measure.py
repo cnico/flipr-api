@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """Pool measure Python model for the Flipr REST API."""
-
 from datetime import datetime
-from dateutil.parser import parse
-from typing import Dict
 from typing import Any
+from typing import Dict
+
+from dateutil.parser import parse
 
 
 class PoolMeasure:
@@ -17,17 +17,18 @@ class PoolMeasure:
         red_ox: A float representing the oxydo reduction level of the pool.
         date_measure: The date time when the measure was taken.
     """
-    temperature:float
-    ph:float
-    chlore:float
-    date_measure:datetime
 
+    temperature: float
+    ph: float
+    chlore: float
+    date_measure: datetime
 
     def __init__(self, raw_data: Dict[str, Any]) -> None:
         """Initialize a PoolMeasure object.
 
         Args:
-            raw_data: A dictionary representing the JSON response from 'get_pool_measure_latest' REST.
+            raw_data: A dictionary representing the JSON response
+                from 'get_pool_measure_latest' REST.
         """
         self.raw_data = raw_data
 
