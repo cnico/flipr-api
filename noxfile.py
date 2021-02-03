@@ -78,7 +78,7 @@ def coverage(session: Session) -> None:
     """Produce the coverage report."""
     # Do not use session.posargs unless this is the only session.
     has_args = session.posargs and len(session._runner.manifest) == 1
-    args = session.posargs if has_args else ["report"]
+    args = session.posargs if has_args else ["report"] #replace report by xml to generate an xml report for codecov.io
 
     session.install("coverage[toml]")
 

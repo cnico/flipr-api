@@ -4,7 +4,7 @@ Client Python pour l'API Météo-France. | Python client for Météo-France API.
 
 |PyPI| |GitHub Release| |Python Version| |License| |Black|
 
-|Read the Docs| |Tests| |Codecov| |GitHub Activity|
+|Read the Docs| |Codecov| |GitHub Activity|
 
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/flipr-api
@@ -22,10 +22,7 @@ Client Python pour l'API Météo-France. | Python client for Météo-France API.
 .. |Read the Docs| image:: https://img.shields.io/readthedocs/flipr-api/latest.svg?label=Read%20the%20Docs
    :target: https://flipr-api.readthedocs.io/
    :alt: Read the documentation at https://flipr-api.readthedocs.io/
-.. |Tests| image:: https://github.com/cnico/flipr-api/workflows/Tests/badge.svg
-   :target: https://github.com/cnico/flipr-api/actions?workflow=Tests
-   :alt: Tests
-.. |Codecov| image:: https://codecov.io/gh/cnico/flipr-api/branch/master/graph/badge.svg
+.. |Codecov| image:: https://codecov.io/gh/cnico/flipr-api/branch/main/graph/badge.svg
    :target: https://codecov.io/gh/cnico/flipr-api
    :alt: Codecov
 .. |GitHub Activity| image:: https://img.shields.io/github/commit-activity/y/cnico/flipr-api.svg
