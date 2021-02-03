@@ -1,6 +1,6 @@
 Flipr Python API REST Client
 ============================
-Client Python pour l'API Météo-France. | Python client for Météo-France API.
+Client Python pour l'API Flipr. | Python client for Flipr API.
 
 |PyPI| |GitHub Release| |Python Version| |License| |Black|
 
