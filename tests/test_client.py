@@ -87,24 +87,29 @@ def test_integration_simple(requests_mock) -> None:  # type: ignore
     assert "AB256C" in list_fliprs
 
     # Test pool measure retrieval
-    pool_measure = client.get_pool_measure_latest("AB256C")
+    data = client.get_pool_measure_latest("AB256C")
+
+    date_time = data["date_time"]
+    temperature = data["temperature"]
+    red_ox = data["red_ox"]
+    chlorine = data["chlorine"]
+    ph = data["ph"]
+
     print(
-        "Valeurs de la piscine : le {:s} temperature = {:.2f}, redox = {:.2f}, chlore = {:.5f}, ph = {:.2f}".format(
-            pool_measure.date_mesure.strftime("%Y-%m-%d %H:%M:%S"),
-            pool_measure.temperature,
-            pool_measure.red_ox,
-            pool_measure.chlore,
-            pool_measure.ph,
+        "Valeurs de la piscine : le {:s} temperature = {:.2f}, redox = {:.2f}, chlorine = {:.5f}, ph = {:.2f}".format(
+            date_time.strftime("%Y-%m-%d %H:%M:%S"),
+            temperature,
+            red_ox,
+            chlorine,
+            ph,
         )
     )
 
-    assert pool_measure.temperature == 10.0
-    assert pool_measure.red_ox == 474.0
-    assert pool_measure.chlore == 0.31986785186370315
-    assert pool_measure.ph == 7.01
-    assert (
-        pool_measure.date_mesure.strftime("%Y-%m-%d %H:%M:%S") == "2021-02-01 07:40:21"
-    )
+    assert temperature == 10.0
+    assert red_ox == 474.0
+    assert chlorine == 0.31986785186370315
+    assert ph == 7.01
+    assert date_time.strftime("%Y-%m-%d %H:%M:%S") == "2021-02-01 07:40:21"
 
     # Test flipr id not found
     requests_mock.get(f"{FLIPR_API_URL}/modules", json=[])

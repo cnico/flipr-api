@@ -21,19 +21,19 @@ def test_integration_simple() -> None:
 
     assert FLIPR_ID in list_fliprs
 
-    pool_measure = client.get_pool_measure_latest(FLIPR_ID)
+    data = client.get_pool_measure_latest(FLIPR_ID)
     print(
-        "Valeurs de la piscine : le {:s} temperature = {:.2f}, redox = {:.2f}, chlore = {:.5f}, ph = {:.2f}".format(
-            pool_measure.date_mesure.strftime("%Y-%m-%d %H:%M:%S"),
-            pool_measure.temperature,
-            pool_measure.red_ox,
-            pool_measure.chlore,
-            pool_measure.ph,
+        "Valeurs de la piscine : le {:s} temperature = {:.2f}, redox = {:.2f}, chlorine = {:.5f}, ph = {:.2f}".format(
+            data["date_time"].strftime("%Y-%m-%d %H:%M:%S"),
+            data["temperature"],
+            data["red_ox"],
+            data["chlorine"],
+            data["ph"],
         )
     )
 
-    assert pool_measure.temperature > 0
-    assert pool_measure.red_ox > 0
-    assert pool_measure.chlore > 0
-    assert pool_measure.ph > 0
-    assert pool_measure.date_mesure is not None
+    assert data["temperature"] > 0
+    assert data["red_ox"] > 0
+    assert data["chlorine"] > 0
+    assert data["ph"] > 0
+    assert data["date_time"] is not None

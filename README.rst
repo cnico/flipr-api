@@ -86,7 +86,7 @@ This Python package allows to communicate with the public REST API `Flipr <https
 
 This client allows to :
 * Retrieve the id of your flipr
-* Get the latest measure of your Flipr (data of temperature, ph, chlore and redox).
+* Get the latest measure of your Flipr (data of temperature, ph, chlorine and redox).
 
 To use this client, it requires you have your login and password created with Flipr's mobile application.
 
