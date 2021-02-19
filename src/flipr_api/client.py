@@ -38,7 +38,7 @@ class FliprAPIRestClient:
             A list of flipr ids registered to the user.
         """
         #init result
-        results = {"flipr":[],"hub":[]}
+        results = {"flipr":[],"hub":[]} # type: Dict[str,List[str]]
 
         # Send the API resuest
         resp = self._get_session().rest_request("GET", "modules")
