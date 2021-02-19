@@ -60,6 +60,7 @@ class FliprAPIRestClient:
 
     def search_flipr_ids(self) -> List[str]:
         """Search the flipr IDs.
+
         Returns:
             A list of flipr ids registered to the user.
         """
@@ -69,6 +70,7 @@ class FliprAPIRestClient:
 
     def search_hub_ids(self) -> List[str]:
         """Search the Hub IDs.
+
         Returns:
             A list of Hub ids registered to the user.
         """
