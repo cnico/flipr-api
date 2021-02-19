@@ -47,7 +47,8 @@ def test_integration_simple(requests_mock) -> None:  # type: ignore
                 "ModuleType_Id": 1,
                 "Eco_Mode": 0,
                 "IsSubscriptionValid": True,
-            },{
+            },
+            {
                 "ActivationKey": "12345",
                 "IsSuspended": False,
                 "Status": {
@@ -74,7 +75,7 @@ def test_integration_simple(requests_mock) -> None:  # type: ignore
                 "ModuleType_Id": 2,
                 "Eco_Mode": 0,
                 "IsSubscriptionValid": True,
-            }
+            },
         ],
     )
     requests_mock.get(

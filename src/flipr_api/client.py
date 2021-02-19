@@ -31,14 +31,14 @@ class FliprAPIRestClient:
             self.session = FliprClientSession(self.username, self.password)
         return self.session
 
-    def search_all_ids(self) -> Dict[str,List[str]]:
+    def search_all_ids(self) -> Dict[str, List[str]]:
         """Search  fliprs and hubs IDs.
 
         Returns:
             A list of flipr ids registered to the user.
         """
-        #init result
-        results = {"flipr":[],"hub":[]} # type: Dict[str,List[str]]
+        # init result
+        results = {"flipr": [], "hub": []}  # type: Dict[str,List[str]]
 
         # Send the API resuest
         resp = self._get_session().rest_request("GET", "modules")
@@ -50,8 +50,12 @@ class FliprAPIRestClient:
             # print("No Flipr found")
             return results
         else:
-            results["flipr"] = [str(item["Serial"]) for item in json_list if item["ModuleType_Id"]==1]
-            results["hub"] = [str(item["Serial"]) for item in json_list if item["ModuleType_Id"]==2]
+            results["flipr"] = [
+                str(item["Serial"]) for item in json_list if item["ModuleType_Id"] == 1
+            ]
+            results["hub"] = [
+                str(item["Serial"]) for item in json_list if item["ModuleType_Id"] == 2
+            ]
             return results
 
     def search_flipr_ids(self) -> List[str]:
@@ -60,7 +64,7 @@ class FliprAPIRestClient:
             A list of flipr ids registered to the user.
         """
         results = self.search_all_ids()
-    
+
         return results["flipr"]
 
     def search_hub_ids(self) -> List[str]:
@@ -69,7 +73,7 @@ class FliprAPIRestClient:
             A list of Hub ids registered to the user.
         """
         results = self.search_all_ids()
-    
+
         return results["hub"]
 
     def get_pool_measure_latest(self, flipr_id: str) -> Dict[str, Any]:
