@@ -1,5 +1,7 @@
 # coding: utf-8
 """Tests Flipr api module."""
+import pytest
+
 from flipr_api import FliprAPIRestClient
 from flipr_api.const import FLIPR_API_URL
 from flipr_api.const import FLIPR_AUTH_URL
@@ -105,13 +107,70 @@ def test_integration_simple(requests_mock) -> None:  # type: ignore
         },
     )
 
+    requests_mock.get(
+        f"{FLIPR_API_URL}/hub/CD256C/state",
+        json={
+            "stateEquipment": 1,
+            "behavior": "manual",
+            "planning": "",
+            "internalKeepAlive": None,
+            "messageModeAutoFiltration": None,
+            "ErrorCode": None,
+            "ErrorMessage": None,
+        },
+    )
+    requests_mock.put(
+        f"{FLIPR_API_URL}/hub/CD256C/mode/manual",
+        json={
+            "stateEquipment": 1,
+            "behavior": "manual",
+            "planning": "",
+            "internalKeepAlive": None,
+            "messageModeAutoFiltration": None,
+            "ErrorCode": None,
+            "ErrorMessage": None,
+        },
+    )
+
+    requests_mock.put(
+        f"{FLIPR_API_URL}/hub/CD256C/mode/auto",
+        json={
+            "stateEquipment": 1,
+            "behavior": "auto",
+            "planning": "",
+            "internalKeepAlive": None,
+            "messageModeAutoFiltration": None,
+            "ErrorCode": None,
+            "ErrorMessage": None,
+        },
+    )
+
+    requests_mock.put(
+        f"{FLIPR_API_URL}/hub/CD256C/mode/planning",
+        json={
+            "stateEquipment": 1,
+            "behavior": "planning",
+            "planning": "",
+            "internalKeepAlive": None,
+            "messageModeAutoFiltration": None,
+            "ErrorCode": None,
+            "ErrorMessage": None,
+        },
+    )
+
+    requests_mock.post(
+        f"{FLIPR_API_URL}/hub/CD256C/Manual/True",
+    )
+
     # Init client
     client = FliprAPIRestClient("USERNAME", "PASSWORD")
 
-    # Test hub id search
-    list_hub = client.search_hub_ids()
-    print("Identifiants hub trouvés : " + str(list_hub))
-    assert "CD256C" in list_hub
+    # Test all id search
+    list_all = client.search_all_ids()
+    print("Identifiants  trouvés : " + str(list_all))
+
+    assert "AB256C" in list_all["flipr"]
+    assert "CD256C" in list_all["hub"]
 
     # Test flipr id search
     list_fliprs = client.search_flipr_ids()
@@ -144,8 +203,50 @@ def test_integration_simple(requests_mock) -> None:  # type: ignore
     assert ph == 7.01
     assert date_time.strftime("%Y-%m-%d %H:%M:%S") == "2021-02-01 07:40:21"
 
+    # Test hub id search
+    list_hub = client.search_hub_ids()
+    print("Identifiants hub trouvés : " + str(list_hub))
+
+    assert "CD256C" in list_hub
+
+    # Test hub get_hub_state
+
+    data = client.get_hub_state("CD256C")
+
+    state = data["state"]
+    mode = data["mode"]
+
+    assert state is True
+    assert mode == "manual"
+
+    # Test hub set_hub_mode
+
+    for target_mode in ["manual", "auto", "planning"]:
+
+        data = client.set_hub_mode("CD256C", target_mode)
+        assert data["mode"] == target_mode
+
+    # Test hub set_hub_mode with wrong value
+    with pytest.raises(ValueError):
+        data = client.set_hub_mode("CD256C", "Manual")
+
+    # Test hub set_hub_state
+
+    data = client.set_hub_state("CD256C", True)
+
+    state = data["state"]
+    mode = data["mode"]
+
+    assert state is True
+    assert mode == "manual"
+
+    # Test hub set_hub_state with wrong value
+    with pytest.raises(ValueError):
+        data = client.set_hub_state("CD256C", "On")
+
     # Test flipr id not found
     requests_mock.get(f"{FLIPR_API_URL}/modules", json=[])
+
     list_fliprs = client.search_flipr_ids()
 
     assert len(list_fliprs) == 0
