@@ -240,10 +240,6 @@ def test_integration_simple(requests_mock) -> None:  # type: ignore
     assert state is True
     assert mode == "manual"
 
-    # Test hub set_hub_state with wrong value
-    with pytest.raises(ValueError):
-        data = client.set_hub_state("CD256C", "On")
-
     # Test flipr id not found
     requests_mock.get(f"{FLIPR_API_URL}/modules", json=[])
 

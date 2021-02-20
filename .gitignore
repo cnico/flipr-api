@@ -11,3 +11,4 @@ coverage.xml
 
 # Editor
 /.vscode
+.DS_Store
