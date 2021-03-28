@@ -107,8 +107,8 @@ class FliprAPIRestClient:
             "chlorine": float(json_resp["Desinfectant"]["Value"]),
             "red_ox": float(json_resp["OxydoReductionPotentiel"]["Value"]),
             "date_time": parse(json_resp["DateTime"]),
-            "ph_status": json_resp["Desinfectant"]["DeviationSector"],
-            "chlorine_status": json_resp["PH"]["DeviationSector"],
+            "ph_status": json_resp["PH"]["DeviationSector"],
+            "chlorine_status": json_resp["Desinfectant"]["DeviationSector"],
         }
 
     def get_hub_state(self, hub_id: str) -> Dict[str, Any]:

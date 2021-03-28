@@ -5,9 +5,9 @@ import pytest
 from flipr_api import FliprAPIRestClient
 
 # Enter correct real values here for the tests to complete successfully with real Flipr Server calls.
-USERNAME = "USERNAME"
-PASSWORD = "PASSWORD"
-FLIPR_ID = "FLIPR_ID"
+USERNAME="DUMMY_USER"
+PASSWORD="DUMMY_PWD"
+FLIPR_ID="DUM_ID"
 HUB_ID = "HUB_ID"
 
 
@@ -24,12 +24,14 @@ def test_integration_simple() -> None:
 
     data = client.get_pool_measure_latest(FLIPR_ID)
     print(
-        "Valeurs de la piscine : le {:s} temperature = {:.2f}, redox = {:.2f}, chlorine = {:.5f}, ph = {:.2f}".format(
+        "Valeurs de la piscine : le {:s} temperature = {:.2f}, redox = {:.2f}, chlorine = {:.5f}, ph = {:.2f}, Alerte PH = {:s}, Alerte chlore = {:s}".format(
             data["date_time"].strftime("%Y-%m-%d %H:%M:%S"),
             data["temperature"],
             data["red_ox"],
             data["chlorine"],
             data["ph"],
+            data["ph_status"],
+            data["chlorine_status"]
         )
     )
 
