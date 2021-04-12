@@ -3,6 +3,8 @@
 from requests import Response
 from requests import Session
 
+from urllib.parse import quote_plus
+
 from .const import FLIPR_API_URL
 from .const import FLIPR_AUTH_URL
 
@@ -27,7 +29,7 @@ class FliprClientSession(Session):
 
         # Authenticate with user and pass and store bearer token
         payload_token = (
-            "grant_type=password&username=" + username + "&password=" + password
+            "grant_type=password&username=" + quote_plus(username) + "&password=" + quote_plus(password)
         )
         headers_token = {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -38,6 +40,7 @@ class FliprClientSession(Session):
         )
         response.raise_for_status()
         # print(response.text)
+        print(response.request.body)
 
         self.bearerToken = str(response.json()["access_token"])
         # print("BearerToken of authentication : " + self.bearerToken)
