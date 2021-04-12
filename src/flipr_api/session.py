@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """Session manager for the Flipr REST API in order to maintain authentication token between calls."""
+from urllib.parse import quote_plus
+
 from requests import Response
 from requests import Session
-
-from urllib.parse import quote_plus
 
 from .const import FLIPR_API_URL
 from .const import FLIPR_AUTH_URL
@@ -29,7 +29,10 @@ class FliprClientSession(Session):
 
         # Authenticate with user and pass and store bearer token
         payload_token = (
-            "grant_type=password&username=" + quote_plus(username) + "&password=" + quote_plus(password)
+            "grant_type=password&username="
+            + quote_plus(username)
+            + "&password="
+            + quote_plus(password)
         )
         headers_token = {
             "Content-Type": "application/x-www-form-urlencoded",

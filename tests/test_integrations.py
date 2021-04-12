@@ -5,9 +5,9 @@ import pytest
 from flipr_api import FliprAPIRestClient
 
 # Enter correct real values here for the tests to complete successfully with real Flipr Server calls.
-USERNAME="DUMMY_USER"
-PASSWORD="DUMMY_PWD"
-FLIPR_ID="DUM_ID"
+USERNAME = "DUMMY_USER"
+PASSWORD = "DUMMY_PWD"
+FLIPR_ID = "DUM_ID"
 HUB_ID = "HUB_ID"
 
 
@@ -31,7 +31,7 @@ def test_integration_simple() -> None:
             data["chlorine"],
             data["ph"],
             data["ph_status"],
-            data["chlorine_status"]
+            data["chlorine_status"],
         )
     )
 
