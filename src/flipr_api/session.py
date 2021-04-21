@@ -43,7 +43,7 @@ class FliprClientSession(Session):
         )
         response.raise_for_status()
         # print(response.text)
-        print(response.request.body)
+        # print(response.request.body)
 
         self.bearerToken = str(response.json()["access_token"])
         # print("BearerToken of authentication : " + self.bearerToken)
