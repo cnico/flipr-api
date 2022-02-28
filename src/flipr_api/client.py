@@ -10,6 +10,8 @@ from dateutil.parser import parse
 
 from .session import FliprClientSession
 
+from .exceptions import FliprError
+
 # TODO: not all API of Flipr servers methods implemented
 
 
@@ -99,6 +101,9 @@ class FliprAPIRestClient:
             "GET", f"modules/{flipr_id}/survey/last"
         )
         json_resp = resp.json()
+        if not json_resp :
+            raise FliprError(f"Error : No data received for flipr {flipr_id} by the API. You should test on flipr official app and contact goflipr if it is not working.")
+        
         # print("Réponse brute de get_pool_latest_values : " + str(json_resp))
 
         return {
