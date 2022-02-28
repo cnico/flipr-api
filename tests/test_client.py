@@ -1,11 +1,11 @@
 # coding: utf-8
 """Tests Flipr api module."""
-from flipr_api.exceptions import FliprError
 import pytest
 
 from flipr_api import FliprAPIRestClient
 from flipr_api.const import FLIPR_API_URL
 from flipr_api.const import FLIPR_AUTH_URL
+from flipr_api.exceptions import FliprError
 
 
 def test_integration_simple(requests_mock) -> None:  # type: ignore
@@ -262,7 +262,7 @@ def test_integration_fliprerror(requests_mock) -> None:  # type: ignore
         },
     )
 
-    #This behaviour is a real one I encountered for an unknown reason of non functionning goflipr API.
+    # This behaviour is a real one I encountered for an unknown reason of non functionning goflipr API.
     requests_mock.get(
         f"{FLIPR_API_URL}/modules/AB256C/survey/last",
         json={},
@@ -272,9 +272,10 @@ def test_integration_fliprerror(requests_mock) -> None:  # type: ignore
     client = FliprAPIRestClient("USERNAME", "PASSWORD")
 
     # Test pool measure retrieval that should Raise a FliprError.
-    with pytest.raises(FliprError) as error_info: 
+    with pytest.raises(FliprError) as error_info:
         client.get_pool_measure_latest("AB256C")
-    
-    assert str(error_info.value) == 'Error : No data received for flipr AB256C by the API. You should test on flipr official app and contact goflipr if it is not working.'
-    
 
+    assert (
+        str(error_info.value)
+        == "Error : No data received for flipr AB256C by the API. You should test on flipr official app and contact goflipr if it is not working."
+    )

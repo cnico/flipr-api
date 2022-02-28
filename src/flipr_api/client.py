@@ -8,9 +8,8 @@ from typing import Optional
 
 from dateutil.parser import parse
 
-from .session import FliprClientSession
-
 from .exceptions import FliprError
+from .session import FliprClientSession
 
 # TODO: not all API of Flipr servers methods implemented
 
@@ -87,6 +86,9 @@ class FliprAPIRestClient:
         Args:
             flipr_id: string containing flipr's id to measure
 
+        Raises:
+            FliprError: when flipr API returns an incorrect response
+
         Returns:
             A dict whose keys are :
                 temperature: A float representing the temperature of the pool.
@@ -101,9 +103,12 @@ class FliprAPIRestClient:
             "GET", f"modules/{flipr_id}/survey/last"
         )
         json_resp = resp.json()
-        if not json_resp :
-            raise FliprError(f"Error : No data received for flipr {flipr_id} by the API. You should test on flipr official app and contact goflipr if it is not working.")
-        
+        if not json_resp:
+            raise FliprError(
+                f"Error : No data received for flipr {flipr_id} by the API. "
+                + "You should test on flipr official app and contact goflipr if it is not working."
+            )
+
         # print("Réponse brute de get_pool_latest_values : " + str(json_resp))
 
         return {
