@@ -4,8 +4,7 @@ import sys
 from pathlib import Path
 
 import nox
-from nox.sessions import Session
-from nox_poetry import session
+from nox_poetry import session, Session
 
 
 package = "flipr_api"
