@@ -190,7 +190,7 @@ def test_integration_simple(requests_mock) -> None:  # type: ignore
     battery = data["battery"]
 
     print(
-        "Valeurs de la piscine : le {:s} temperature = {:.2f}, redox = {:.2f}, chlorine = {:.5f}, ph = {:.2f}, battery= {:.2f}".format(
+        "Valeurs de la piscine : le {:s} temperature = {:.2f}, redox = {:.2f}, chlorine = {:.5f}, ph = {:.2f}, battery = {:.2f}".format(
             date_time.strftime("%Y-%m-%d %H:%M:%S"),
             temperature,
             red_ox,
@@ -205,7 +205,7 @@ def test_integration_simple(requests_mock) -> None:  # type: ignore
     assert chlorine == 0.31986785186370315
     assert ph == 7.01
     assert date_time.strftime("%Y-%m-%d %H:%M:%S") == "2021-02-01 07:40:21"
-    assert battery == 0.75
+    assert battery == 75
 
     # Test hub id search
     list_hub = client.search_hub_ids()

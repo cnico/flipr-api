@@ -24,7 +24,7 @@ def test_integration_simple() -> None:
 
     data = client.get_pool_measure_latest(FLIPR_ID)
     print(
-        "Valeurs de la piscine : le {:s} temperature = {:.2f}, redox = {:.2f}, chlorine = {:.5f}, ph = {:.2f}, Alerte PH = {:s}, Alerte chlore = {:s}, Battery ={:.2f}".format(
+        "Valeurs de la piscine : le {:s} temperature = {:.2f}, redox = {:.2f}, chlorine = {:.5f}, ph = {:.2f}, Alerte PH = {:s}, Alerte chlore = {:s}, Battery = {:.2f}".format(
             data["date_time"].strftime("%Y-%m-%d %H:%M:%S"),
             data["temperature"],
             data["red_ox"],
