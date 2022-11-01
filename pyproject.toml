@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "flipr-api"
-version = "1.4.2"
+version = "1.4.3"
 description = "Python client for flipr API."
 authors = ["cnico"]
 license = "MIT"
