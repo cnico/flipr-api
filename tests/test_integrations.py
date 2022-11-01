@@ -24,7 +24,7 @@ def test_integration_simple() -> None:
 
     data = client.get_pool_measure_latest(FLIPR_ID)
     print(
-        "Valeurs de la piscine : le {:s} temperature = {:.2f}, redox = {:.2f}, chlorine = {:.5f}, ph = {:.2f}, Alerte PH = {:s}, Alerte chlore = {:s}".format(
+        "Valeurs de la piscine : le {:s} temperature = {:.2f}, redox = {:.2f}, chlorine = {:.5f}, ph = {:.2f}, Alerte PH = {:s}, Alerte chlore = {:s}, Battery ={:.2f}".format(
             data["date_time"].strftime("%Y-%m-%d %H:%M:%S"),
             data["temperature"],
             data["red_ox"],
@@ -32,6 +32,7 @@ def test_integration_simple() -> None:
             data["ph"],
             data["ph_status"],
             data["chlorine_status"],
+            data["battery"],
         )
     )
 
@@ -40,6 +41,7 @@ def test_integration_simple() -> None:
     assert data["chlorine"] > 0
     assert data["ph"] > 0
     assert data["date_time"] is not None
+    assert data["battery"] > 0
 
 
 @pytest.mark.skip("Not an automated test but an example of usage with real values.")

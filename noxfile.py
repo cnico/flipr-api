@@ -9,7 +9,7 @@ from nox_poetry import session
 
 
 package = "flipr_api"
-python_versions = ["3.9", "3.8", "3.7", "3.6"]
+python_versions = ["3.10", "3.9", "3.8", "3.7", "3.6"]
 nox.options.sessions = (
     "pre-commit",
     "safety",
@@ -21,7 +21,7 @@ nox.options.sessions = (
 )
 
 
-@session(name="pre-commit", python="3.9")
+@session(name="pre-commit", python="3.10")
 def precommit(session: Session) -> None:
     """Lint using pre-commit."""
     args = session.posargs or ["run", "--all-files", "--show-diff-on-failure"]
@@ -41,7 +41,7 @@ def precommit(session: Session) -> None:
     session.run("pre-commit", *args)
 
 
-@session(python="3.9")
+@session(python="3.10")
 def safety(session: Session) -> None:
     """Scan dependencies for insecure packages."""
     requirements = session.poetry.export_requirements()
@@ -79,7 +79,7 @@ def coverage(session: Session) -> None:
     # Do not use session.posargs unless this is the only session.
     has_args = session.posargs and len(session._runner.manifest) == 1
     # replace report by xml to generate an xml report for codecov.io
-    args = session.posargs if has_args else ["report"]
+    args = session.posargs if has_args else ["xml"]
 
     session.install("coverage[toml]")
 
@@ -106,7 +106,7 @@ def xdoctest(session: Session) -> None:
     session.run("python", "-m", "xdoctest", package, *args)
 
 
-@session(name="docs-build", python="3.9")
+@session(name="docs-build", python="3.10")
 def docs_build(session: Session) -> None:
     """Build the documentation."""
     args = session.posargs or ["docs", "docs/_build"]
