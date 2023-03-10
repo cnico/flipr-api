@@ -82,28 +82,30 @@ def test_integration_simple(requests_mock) -> None:  # type: ignore
         ],
     )
     requests_mock.get(
-        f"{FLIPR_API_URL}/modules/AB256C/survey/last",
+        f"{FLIPR_API_URL}/modules/AB256C/NewResume",
         json={
-            "MeasureId": 405698,
-            "DateTime": "2021-02-01T07:40:21Z",
-            "Temperature": 10.0,
-            "PH": {
-                "Label": "PH",
-                "Message": "Parfait",
-                "Deviation": -0.47,
-                "Value": 7.01,
-                "DeviationSector": "Medium",
-            },
-            "OxydoReductionPotentiel": {"Label": "Potentiel Redox.", "Value": 474.0},
-            "Conductivity": {"Label": "Conductivité", "Level": "Low"},
-            "UvIndex": 0.0,
-            "Battery": {"Label": "Batterie", "Deviation": 0.75},
-            "Desinfectant": {
-                "Label": "Chlore",
-                "Message": "Trop faible",
-                "Deviation": -1.01,
-                "Value": 0.31986785186370315,
-                "DeviationSector": "TooLow",
+            "Current": {
+                "MeasureId": 405698,
+                "DateTime": "2021-02-01T07:40:21Z",
+                "Temperature": 10.0,
+                "PH": {
+                    "Label": "PH",
+                    "Message": "Parfait",
+                    "Deviation": -0.47,
+                    "Value": 7.01,
+                    "DeviationSector": "Medium",
+                },
+                "OxydoReductionPotentiel": {"Label": "Potentiel Redox.", "Value": 474.0},
+                "Conductivity": {"Label": "Conductivité", "Level": "Low"},
+                "UvIndex": 0.0,
+                "Battery": {"Label": "Batterie", "Deviation": 0.75},
+                "Desinfectant": {
+                    "Label": "Chlore",
+                    "Message": "Trop faible",
+                    "Deviation": -1.01,
+                    "Value": 0.31986785186370315,
+                    "DeviationSector": "TooLow",
+                },
             },
         },
     )
@@ -267,7 +269,7 @@ def test_integration_fliprerror(requests_mock) -> None:  # type: ignore
 
     # This behaviour is a real one I encountered for an unknown reason of non functionning goflipr API.
     requests_mock.get(
-        f"{FLIPR_API_URL}/modules/AB256C/survey/last",
+        f"{FLIPR_API_URL}/modules/AB256C/NewResume",
         json={},
     )
 
@@ -280,5 +282,5 @@ def test_integration_fliprerror(requests_mock) -> None:  # type: ignore
 
     assert (
         str(error_info.value)
-        == "Error : No data received for flipr AB256C by the API. You should test on flipr official app and contact goflipr if it is not working."
+        == "Error : No data received for flipr AB256C by the API. You should test on flipr official app and contact goflipr if it is not working. Or perhaps API has changed :(."
     )

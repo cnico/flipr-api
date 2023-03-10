@@ -100,26 +100,26 @@ class FliprAPIRestClient:
                 chlorine_status : Alert status for chlorine value in : TooLow, MediumLow, Medium, MediumHigh, TooHigh
         """
         resp = self._get_session().rest_request(
-            "GET", f"modules/{flipr_id}/survey/last"
+            "GET", f"modules/{flipr_id}/NewResume"
         )
         json_resp = resp.json()
         if not json_resp:
             raise FliprError(
                 f"Error : No data received for flipr {flipr_id} by the API. "
-                + "You should test on flipr official app and contact goflipr if it is not working."
+                + "You should test on flipr official app and contact goflipr if it is not working. Or perhaps API has changed :(."
             )
 
         # print("Réponse brute de get_pool_latest_values : " + str(json_resp))
 
         return {
-            "temperature": float(json_resp["Temperature"]),
-            "ph": float(json_resp["PH"]["Value"]),
-            "chlorine": float(json_resp["Desinfectant"]["Value"]),
-            "red_ox": float(json_resp["OxydoReductionPotentiel"]["Value"]),
-            "date_time": parse(json_resp["DateTime"]),
-            "ph_status": json_resp["PH"]["DeviationSector"],
-            "chlorine_status": json_resp["Desinfectant"]["DeviationSector"],
-            "battery": float(json_resp["Battery"]["Deviation"] * 100),
+            "temperature": float(json_resp["Current"]["Temperature"]),
+            "ph": float(json_resp["Current"]["PH"]["Value"]),
+            "chlorine": float(json_resp["Current"]["Desinfectant"]["Value"]),
+            "red_ox": float(json_resp["Current"]["OxydoReductionPotentiel"]["Value"]),
+            "date_time": parse(json_resp["Current"]["DateTime"]),
+            "ph_status": json_resp["Current"]["PH"]["DeviationSector"],
+            "chlorine_status": json_resp["Current"]["Desinfectant"]["DeviationSector"],
+            "battery": float(json_resp["Current"]["Battery"]["Deviation"] * 100),
         }
 
     def get_hub_state(self, hub_id: str) -> Dict[str, Any]:
