@@ -12,6 +12,7 @@ Set the username parameter to your email adress of the flipr app
 Set the password parameter to your password value
 
 Retrieve the bearer token from the "access_token" value of the result.
+
 .. image:: ./testing_authentification.jpg
 
 
@@ -21,5 +22,6 @@ Replace XXXXX with your flipr ID
 Set the bearer token got from the previous response
 
 You should have a result with the data like : 
+
 .. image:: ./testing_flipr_getresume.jpg
 
