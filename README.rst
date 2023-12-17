@@ -68,6 +68,8 @@ le package en utilisant pip_ depuis PyPI_:
 Vous pouvez trouver un exemple d'usage en regardant
 `le test d'intégration <tests/test_integrations.py>`_.
 
+Vous pouvez également faire un test direct de l'API REST en suivant l'exemple `testing_api.rst`_.
+
 Contribuer
 ^^^^^^^^^^
 
@@ -104,6 +106,8 @@ pip_ from PyPI_:
    $ pip install flipr-api
 
 You will find an example ot usage in a Python program in the `integration test <tests/test_integrations.py>`_.
+
+You can test directly the flipr API following the given sample `testing_api.rst`_.
 
 Contributing
 ^^^^^^^^^^^^
