@@ -124,3 +124,4 @@ This project was inspired from the MeteoFranceAPI_ HACF project.
 .. _PyPI: https://pypi.org/
 .. _pip: https://pip.pypa.io/
 .. _CONTRIBUTING.rst: CONTRIBUTING.rst
+.. _testing_api.rst: testing_api.rst
