@@ -9,7 +9,7 @@ from nox_poetry import session
 
 
 package = "flipr_api"
-python_versions = ["3.10", "3.9", "3.8", "3.7", "3.6"]
+python_versions = ["3.10", "3.9", "3.8"]
 nox.options.sessions = (
     "pre-commit",
     "safety",
@@ -106,7 +106,7 @@ def xdoctest(session: Session) -> None:
     session.run("python", "-m", "xdoctest", package, *args)
 
 
-@session(name="docs-build", python="3.9")
+@session(name="docs-build", python="3.10")
 def docs_build(session: Session) -> None:
     """Build the documentation."""
     args = session.posargs or ["docs", "docs/_build"]
