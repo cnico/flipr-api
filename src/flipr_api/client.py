@@ -106,10 +106,18 @@ class FliprAPIRestClient:
         if not json_resp:
             raise FliprError(
                 f"Error : No data received for flipr {flipr_id} by the API. "
-                + "You should test on flipr official app and contact goflipr if it is not working. Or perhaps API has changed :(."
+                + "You should test on flipr official app and contact goflipr if it is not working. "
+                + "Or perhaps API has changed :(."
             )
 
         # print("Réponse brute de get_pool_latest_values : " + str(json_resp))
+
+        if not json_resp["Current"] or not json_resp["Current"]["Temperature"]:
+            raise FliprError(
+                f"Error : No measure found for flipr {flipr_id} by the API. "
+                + "Your flipr is probably not calibrated or in Winter mode. "
+                + "You should deactive the integration until you resolve the problem via the flipr official app. "
+            )
 
         return {
             "temperature": float(json_resp["Current"]["Temperature"]),

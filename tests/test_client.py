@@ -284,3 +284,35 @@ def test_integration_fliprerror(requests_mock) -> None:  # type: ignore
         str(error_info.value)
         == "Error : No data received for flipr AB256C by the API. You should test on flipr official app and contact goflipr if it is not working. Or perhaps API has changed :(."
     )
+
+
+def test_fliprerror_hibernation(requests_mock) -> None:  # type: ignore
+    """Test a get pool measures that raises an error because of no value."""
+    # mock behaviour :
+    requests_mock.post(
+        FLIPR_AUTH_URL,
+        json={
+            "access_token": "abcd-dummy_token_value",
+            "token_type": "bearer",
+            "expires_in": 23327999,
+            "refresh_token": "dummy_refresh_token",
+        },
+    )
+
+    # This behaviour is a real one I encountered for an unknown reason of non functionning goflipr API.
+    requests_mock.get(
+        f"{FLIPR_API_URL}/modules/AB259C/NewResume",
+        json={"Current": ''},
+    )
+
+    # Init client
+    client = FliprAPIRestClient("USERNAME", "PASSWORD")
+
+    # Test pool measure retrieval that should Raise a FliprError.
+    with pytest.raises(FliprError) as error_info:
+        client.get_pool_measure_latest("AB259C")
+
+    assert (
+        str(error_info.value)
+        == "Error : No measure found for flipr AB259C by the API. Your flipr is probably not calibrated or in Winter mode. You should deactive the integration until you resolve the problem via the flipr official app. "
+    )
