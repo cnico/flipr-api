@@ -8,6 +8,8 @@ from requests import Session
 from .const import FLIPR_API_URL
 from .const import FLIPR_AUTH_URL
 
+import http.client as http_client
+import logging
 
 class FliprClientSession(Session):
     """HTTP session manager for Flipr api.
@@ -37,7 +39,22 @@ class FliprClientSession(Session):
         headers_token = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Cache-Control": "no-cache",
+            "user-agent": "X-Flipr"
         }
+
+        # These two lines enable debugging at httplib level (requests->urllib3->http.client)
+        # You will see the REQUEST, including HEADERS and DATA, and RESPONSE with HEADERS but without DATA.
+        # The only thing missing will be the response.body which is not logged.
+
+        http_client.HTTPConnection.debuglevel = 1
+
+        # You must initialize logging, otherwise you'll not see debug output.
+        logging.basicConfig()
+        logging.getLogger().setLevel(logging.DEBUG)
+        requests_log = logging.getLogger("requests.packages.urllib3")
+        requests_log.setLevel(logging.DEBUG)
+        requests_log.propagate = True
+
         response = super().request(
             "POST", FLIPR_AUTH_URL, data=payload_token, headers=headers_token
         )
@@ -61,6 +78,7 @@ class FliprClientSession(Session):
         headers_auth = {
             "Authorization": "Bearer " + self.bearerToken,
             "Cache-Control": "no-cache",
+            "user-agent": "X-Flipr"
         }
 
         response = super().request(method, f"{self.host}/{path}", headers=headers_auth)
