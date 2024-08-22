@@ -20,3 +20,12 @@ clear ; poetry run pytest -s --cov=src tests/test_integrations.py
 
 #Pour tester la doc
 poetry run mkdocs serve
+
+
+#Pour publier sur codecov :
+bash <(curl -s https://codecov.io/bash ) -t 68fa5301-c989-4415-83e5-5c43c1bb62fe
+
+
+#Publication pypi :
+poetry build
+twine upload dist/flipr_api-1.6.0-py3-none-any.whl --verbose
