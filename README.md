@@ -64,7 +64,7 @@ This package has been developed to be used with [Home-Assistant](https://home-as
 
 ### Installation english
 
-To use the `**flipr_api** Python module, you have to install this package first via [pip](https://pip.pypa.io/) from [PyPI](https://pypi.org/):
+To use the **flipr_api** Python module, you have to install this package first via [pip](https://pip.pypa.io/) from [PyPI](https://pypi.org/):
 
 ```console
    pip install flipr-api
