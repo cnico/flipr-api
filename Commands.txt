@@ -1,0 +1,22 @@
+Commandes utiles :
+
+#Pour mettre à jour les dépendances
+poetry update
+
+# Pour installer le hook de pre-commit :
+poetry run pre-commit install
+
+#Pour lancer black
+poetry run black .
+
+#Pour lancer ruff
+poetry run ruff format
+
+
+#Pour lancer les tests
+poetry run pytest -s
+
+clear ; poetry run pytest -s --cov=src tests/test_integrations.py
+
+#Pour tester la doc
+poetry run mkdocs serve

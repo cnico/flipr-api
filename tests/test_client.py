@@ -1,11 +1,15 @@
 # coding: utf-8
 """Tests Flipr api module."""
-import pytest
 
+import logging
+
+import pytest
 from flipr_api import FliprAPIRestClient
 from flipr_api.const import FLIPR_API_URL
 from flipr_api.const import FLIPR_AUTH_URL
 from flipr_api.exceptions import FliprError
+
+_LOGGER = logging.getLogger(__name__)
 
 
 def test_integration_simple(requests_mock) -> None:  # type: ignore
@@ -170,14 +174,14 @@ def test_integration_simple(requests_mock) -> None:  # type: ignore
 
     # Test all id search
     list_all = client.search_all_ids()
-    print("Identifiants  trouvés : " + str(list_all))
+    _LOGGER.debug("Identifiants  trouvés : %s", list_all)
 
     assert "AB256C" in list_all["flipr"]
     assert "CD256C" in list_all["hub"]
 
     # Test flipr id search
     list_fliprs = client.search_flipr_ids()
-    print("Identifiants flipper trouvés : " + str(list_fliprs))
+    _LOGGER.debug("Identifiants flipper trouvés : %s", list_fliprs)
 
     assert "AB256C" in list_fliprs
 
@@ -191,15 +195,14 @@ def test_integration_simple(requests_mock) -> None:  # type: ignore
     ph = data["ph"]
     battery = data["battery"]
 
-    print(
-        "Valeurs de la piscine : le {:s} temperature = {:.2f}, redox = {:.2f}, chlorine = {:.5f}, ph = {:.2f}, battery = {:.2f}".format(
-            date_time.strftime("%Y-%m-%d %H:%M:%S"),
-            temperature,
-            red_ox,
-            chlorine,
-            ph,
-            battery,
-        )
+    _LOGGER.debug(
+        "Valeurs de la piscine : le %s temperature = %.2f, redox = %.2f, chlorine = %.5f, ph = %.2f, battery = %.2f",
+        date_time.strftime("%Y-%m-%d %H:%M:%S"),
+        temperature,
+        red_ox,
+        chlorine,
+        ph,
+        battery,
     )
 
     assert temperature == 10.0
@@ -211,7 +214,7 @@ def test_integration_simple(requests_mock) -> None:  # type: ignore
 
     # Test hub id search
     list_hub = client.search_hub_ids()
-    print("Identifiants hub trouvés : " + str(list_hub))
+    _LOGGER.debug("Identifiants hub trouvés : %s", list_hub)
 
     assert "CD256C" in list_hub
 
@@ -228,7 +231,6 @@ def test_integration_simple(requests_mock) -> None:  # type: ignore
     # Test hub set_hub_mode
 
     for target_mode in ["manual", "auto", "planning"]:
-
         data = client.set_hub_mode("CD256C", target_mode)
         assert data["mode"] == target_mode
 
@@ -282,7 +284,9 @@ def test_integration_fliprerror(requests_mock) -> None:  # type: ignore
 
     assert (
         str(error_info.value)
-        == "Error : No data received for flipr AB256C by the API. You should test on flipr official app and contact goflipr if it is not working. Or perhaps API has changed :(."
+        == "Error : No data received for flipr AB256C by the API."
+        + " You should test on flipr official app and contact goflipr if it is not working."
+        + " Or perhaps API has changed :(."
     )
 
 
@@ -302,7 +306,7 @@ def test_fliprerror_hibernation(requests_mock) -> None:  # type: ignore
     # This behaviour is a real one I encountered for an unknown reason of non functionning goflipr API.
     requests_mock.get(
         f"{FLIPR_API_URL}/modules/AB259C/NewResume",
-        json={"Current": ''},
+        json={"Current": ""},
     )
 
     # Init client
@@ -314,5 +318,7 @@ def test_fliprerror_hibernation(requests_mock) -> None:  # type: ignore
 
     assert (
         str(error_info.value)
-        == "Error : No measure found for flipr AB259C by the API. Your flipr is probably not calibrated or in Winter mode. You should deactive the integration until you resolve the problem via the flipr official app. "
+        == "Error : No measure found for flipr AB259C by the API."
+        + " Your flipr is probably not calibrated or in Winter mode."
+        + " You should deactive the integration until you resolve the problem via the flipr official app. "
     )

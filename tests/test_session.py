@@ -1,14 +1,15 @@
 # coding: utf-8
 """Tests Flipr module. FliprAPIRestClient class."""
+
 import pytest
+from flipr_api.const import FLIPR_API_URL
+from flipr_api.const import FLIPR_AUTH_URL
+from flipr_api.session import FliprClientSession
 from requests.exceptions import HTTPError
 from requests.exceptions import RequestException
 
 from .test_integrations import PASSWORD
 from .test_integrations import USERNAME
-from flipr_api.const import FLIPR_API_URL
-from flipr_api.const import FLIPR_AUTH_URL
-from flipr_api.session import FliprClientSession
 
 
 def test_session(requests_mock) -> None:  # type: ignore

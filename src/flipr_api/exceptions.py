@@ -1,4 +1,5 @@
 """Exceptions for Flipr."""
+
 from typing import Any
 
 

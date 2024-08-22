@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Client for the Flipr REST API."""
+
+import logging
 import time
 from typing import Any
 from typing import Dict
@@ -11,7 +13,7 @@ from dateutil.parser import parse
 from .exceptions import FliprError
 from .session import FliprClientSession
 
-# TODO: not all API of Flipr servers methods implemented
+_LOGGER = logging.getLogger(__name__)
 
 
 class FliprAPIRestClient:
@@ -44,20 +46,16 @@ class FliprAPIRestClient:
 
         # Send the API resuest
         resp = self._get_session().rest_request("GET", "modules")
-        # print("Réponse brute de GET /modules : " + str(resp.json()))
-
         json_list = resp.json()
 
+        _LOGGER.debug("Réponse brute de GET /modules : %s", json_list)
+
         if len(json_list) == 0:
-            # print("No Flipr found")
+            _LOGGER.debug("No module found")
             return results
         else:
-            results["flipr"] = [
-                str(item["Serial"]) for item in json_list if item["ModuleType_Id"] == 1
-            ]
-            results["hub"] = [
-                str(item["Serial"]) for item in json_list if item["ModuleType_Id"] == 2
-            ]
+            results["flipr"] = [str(item["Serial"]) for item in json_list if item["ModuleType_Id"] == 1]
+            results["hub"] = [str(item["Serial"]) for item in json_list if item["ModuleType_Id"] == 2]
             return results
 
     def search_flipr_ids(self) -> List[str]:
@@ -99,9 +97,7 @@ class FliprAPIRestClient:
                 ph_status : Alert status for PH value in : TooLow, MediumLow, Medium, MediumHigh, TooHigh
                 chlorine_status : Alert status for chlorine value in : TooLow, MediumLow, Medium, MediumHigh, TooHigh
         """
-        resp = self._get_session().rest_request(
-            "GET", f"modules/{flipr_id}/NewResume"
-        )
+        resp = self._get_session().rest_request("GET", f"modules/{flipr_id}/NewResume")
         json_resp = resp.json()
         if not json_resp:
             raise FliprError(
@@ -110,7 +106,7 @@ class FliprAPIRestClient:
                 + "Or perhaps API has changed :(."
             )
 
-        # print("Réponse brute de get_pool_latest_values : " + str(json_resp))
+        _LOGGER.debug("Réponse brute de get_pool_latest_values : %s", json_resp)
 
         if not json_resp["Current"] or not json_resp["Current"]["Temperature"]:
             raise FliprError(
@@ -138,32 +134,35 @@ class FliprAPIRestClient:
 
         Returns:
             A dict whose keys are :
-                state: A bool representing the status of the Hub.
-                mode: A string representing current mode in : auto, manual, planning.
+                state : A bool representing the status of the Hub.
+                mode : A string representing current mode in : auto, manual, planning.
+                planning : A string representing current planning id.
         """
         resp = self._get_session().rest_request("GET", f"hub/{hub_id}/state")
         json_resp = resp.json()
-        # print("Réponse brute de get_hub_state : " + str(json_resp))
+        _LOGGER.debug("Réponse brute de get_hub_state : %s", json_resp)
 
         return {
             "state": bool(json_resp["stateEquipment"]),
             "mode": json_resp["behavior"],
+            "planning": json_resp["planning"],
         }
 
     def set_hub_mode(self, hub_id: str, mode: str) -> Dict[str, Any]:
         """Set current mode for the given Hub ID.
 
         Args:
-            hub_id: string containing hub's
-            mode: target mode in auto, manual, planning
+            hub_id : string containing hub's
+            mode : target mode in auto, manual, planning
 
         Returns:
             A dict whose keys are :
-                state: A bool representing the current status of the Hub.
-                mode: A string representing current mode in : auto, manual, planning.
+                state : A bool representing the current status of the Hub.
+                mode : A string representing current mode in : auto, manual, planning.
+                planning: A string representing current planning id.
 
         Raises:
-             ValueError: if mode is not valid.
+             ValueError : if mode is not valid.
         """
         if str(mode) not in ["auto", "manual", "planning"]:
             raise ValueError(f"{mode} is not an valid mode (auto/planning/manual)")
@@ -172,7 +171,7 @@ class FliprAPIRestClient:
 
         resp = self._get_session().rest_request("PUT", f"hub/{hub_id}/mode/{mode}")
         json_resp = resp.json()
-        # print("Réponse brute de set_hub_mode : " + str(json_resp))
+        _LOGGER.debug("Réponse brute de set_hub_mode : %s", json_resp)
 
         return {
             "state": bool(json_resp["stateEquipment"]),
@@ -183,13 +182,14 @@ class FliprAPIRestClient:
         """Set current state for the given Hub ID (which is setting mode to manual).
 
         Args:
-            hub_id: string containing hub's
-            state: boolean (True On / False Off)
+            hub_id : string containing hub's
+            state : boolean (True On / False Off)
 
         Returns:
             A dict whose keys are :
-                state: A bool representing the final status of the Hub.
-                mode: A string representing final mode in : auto, manual, planning.
+                state : A bool representing the final status of the Hub.
+                mode : A string representing final mode in : auto, manual, planning.
+                planning : A string representing current planning id.
 
         """
         state_str = str(state)

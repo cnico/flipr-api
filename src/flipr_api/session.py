@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Session manager for the Flipr REST API in order to maintain authentication token between calls."""
+
+import logging
 from urllib.parse import quote_plus
 
 from requests import Response
@@ -7,6 +9,8 @@ from requests import Session
 
 from .const import FLIPR_API_URL
 from .const import FLIPR_AUTH_URL
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class FliprClientSession(Session):
@@ -27,26 +31,19 @@ class FliprClientSession(Session):
         """
         Session.__init__(self)
 
+        _LOGGER.debug("Starting authentification with username '%s' and password '%s'", username, password)
+
         # Authenticate with user and pass and store bearer token
-        payload_token = (
-            "grant_type=password&username="
-            + quote_plus(username)
-            + "&password="
-            + quote_plus(password)
-        )
+        payload_token = "grant_type=password&username=" + quote_plus(username) + "&password=" + quote_plus(password)
         headers_token = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Cache-Control": "no-cache",
         }
-        response = super().request(
-            "POST", FLIPR_AUTH_URL, data=payload_token, headers=headers_token
-        )
+        response = super().request("POST", FLIPR_AUTH_URL, data=payload_token, headers=headers_token)
         response.raise_for_status()
-        # print(response.text)
-        # print(response.request.body)
 
         self.bearerToken = str(response.json()["access_token"])
-        # print("BearerToken of authentication : " + self.bearerToken)
+        _LOGGER.debug("BearerToken of authentication : %s", self.bearerToken)
 
     def rest_request(self, method: str, path: str) -> Response:
         """Make a request using token authentication.

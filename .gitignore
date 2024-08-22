@@ -12,3 +12,5 @@ coverage.xml
 # Editor
 /.vscode
 .DS_Store
+env_jf.sh
+env_nca.sh

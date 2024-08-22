@@ -1,10 +1,10 @@
 [tool.poetry]
 name = "flipr-api"
-version = "1.5.1"
+version = "1.6.0"
 description = "Python client for flipr API."
 authors = ["cnico"]
-license = "MIT"
-readme = "README.rst"
+license = "GPL-3.0-or-later"
+readme = "README.md"
 homepage = "https://github.com/cnico/flipr-api"
 repository = "https://github.com/cnico/flipr-api"
 documentation = "https://flipr-api.readthedocs.io"
@@ -13,19 +13,18 @@ classifiers = [
     "Operating System :: OS Independent",
     "Development Status :: 5 - Production/Stable",
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
 ]
 
 [tool.poetry.urls]
 Changelog = "https://github.com/cnico/flipr-api/releases"
 
 [tool.poetry.dependencies]
-python = "^3.9.0"
+python = "^3.10.0"
 requests = "^2.25.0"
 python-dateutil = "^2.7.0"
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.2.1"
+pytest = "^8.0.0"
 requests_mock = "^1.8.0"
 coverage = {extras = ["toml"], version = "^5.3"}
 safety = "^1.9.0"
@@ -36,7 +35,6 @@ sphinx = "^7.2.6"
 sphinx-rtd-theme = "^2.0.0"
 sphinx-click = "^5.1.0"
 flake8 = "^3.8.4"
-black = "^20.8b1"
 flake8-bandit = "^2.1.2"
 flake8-bugbear = "^20.11.1"
 flake8-docstrings = "^1.5.0"
@@ -45,12 +43,18 @@ pep8-naming = "^0.11.1"
 darglint = "^1.5.8"
 reorder-python-imports = "^2.3.6"
 Pygments = "^2.7.3"
-
-[tool.poetry.scripts]
-flipr-api = "flipr_api.__main__:main"
+codecov = "^2.1.13"
+pytest-cov = "^5.0.0"
+black = "^24.8.0"
+ruff = "^0.6.1"
+pre-commit = "^3.8.0"
+mkdocs = "^1.6.0"
+mkdocstrings = "^0.25.2"
+mkdocstrings-python = "^1.10.8"
+markdown-include = "^0.8.1"
 
 [tool.coverage.paths]
-source = ["src", "*/site-packages"]
+source = ["src"]
 
 [tool.coverage.run]
 branch = true
@@ -63,3 +67,19 @@ fail_under = 100
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "DEBUG"
+
+# Cf : https://laszlo.substack.com/p/cq4ds-python-project-from-scratch
+[tool.black]
+skip-string-normalization = true
+line-length = 120
+
+[tool.ruff]
+# Same as Black.
+line-length = 120
+
+[tool.flake8]
+max-line-length = 120
