@@ -167,16 +167,18 @@ class FliprAPIRestClient:
         if str(mode) not in ["auto", "manual", "planning"]:
             raise ValueError(f"{mode} is not an valid mode (auto/planning/manual)")
 
+        _LOGGER.debug("Setting hub %s mode to %s", hub_id, mode)
         mode = str(mode)
 
         resp = self._get_session().rest_request("PUT", f"hub/{hub_id}/mode/{mode}")
         json_resp = resp.json()
         _LOGGER.debug("Réponse brute de set_hub_mode : %s", json_resp)
 
-        return {
-            "state": bool(json_resp["stateEquipment"]),
-            "mode": json_resp["behavior"],
-        }
+        result = self.get_hub_state(hub_id)
+
+        _LOGGER.debug("Done setting new hub mode for %s. Result is : %s", hub_id, result)
+
+        return result
 
     def set_hub_state(self, hub_id: str, state: bool) -> Dict[str, Any]:
         """Set current state for the given Hub ID (which is setting mode to manual).
@@ -192,14 +194,21 @@ class FliprAPIRestClient:
                 planning : A string representing current planning id.
 
         """
+        _LOGGER.debug("Setting hub %s state to %s", hub_id, state)
         state_str = str(state)
 
         # put hub to manual mode (required to work)
         self.set_hub_mode(hub_id, "manual")
         self._get_session().rest_request("POST", f"hub/{hub_id}/Manual/{state_str}")
 
-        # wait for change to happen
-        time.sleep(1)
+        # wait for change to happen for 10s max
+        for _ in range(10):
+            _LOGGER.debug("Waiting for hub state effective change")
+            time.sleep(1)
+            new_state = self.get_hub_state(hub_id)
+            if new_state["state"] == state:
+                break
 
-        # return new status
-        return self.get_hub_state(hub_id)
+        _LOGGER.debug("Hub state change done : %s", new_state)
+
+        return new_state

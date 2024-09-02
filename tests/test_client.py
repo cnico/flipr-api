@@ -117,7 +117,7 @@ def test_integration_simple(requests_mock) -> None:  # type: ignore
     requests_mock.get(
         f"{FLIPR_API_URL}/hub/CD256C/state",
         json={
-            "stateEquipment": 1,
+            "stateEquipment": 0,
             "behavior": "manual",
             "planning": "",
             "internalKeepAlive": None,
@@ -225,12 +225,24 @@ def test_integration_simple(requests_mock) -> None:  # type: ignore
     state = data["state"]
     mode = data["mode"]
 
-    assert state is True
+    assert state is False
     assert mode == "manual"
 
     # Test hub set_hub_mode
 
     for target_mode in ["manual", "auto", "planning"]:
+        requests_mock.get(
+            f"{FLIPR_API_URL}/hub/CD256C/state",
+            json={
+                "stateEquipment": 1,
+                "behavior": target_mode,
+                "planning": "",
+                "internalKeepAlive": None,
+                "messageModeAutoFiltration": None,
+                "ErrorCode": None,
+                "ErrorMessage": None,
+            },
+        )
         data = client.set_hub_mode("CD256C", target_mode)
         assert data["mode"] == target_mode
 
@@ -238,8 +250,20 @@ def test_integration_simple(requests_mock) -> None:  # type: ignore
     with pytest.raises(ValueError):
         data = client.set_hub_mode("CD256C", "Manual")
 
+    _LOGGER.debug("Now testing set_hub_state...")
     # Test hub set_hub_state
-
+    requests_mock.get(
+        f"{FLIPR_API_URL}/hub/CD256C/state",
+        json={
+            "stateEquipment": 1,
+            "behavior": "manual",
+            "planning": "",
+            "internalKeepAlive": None,
+            "messageModeAutoFiltration": None,
+            "ErrorCode": None,
+            "ErrorMessage": None,
+        },
+    )
     data = client.set_hub_state("CD256C", True)
 
     state = data["state"]
@@ -249,6 +273,7 @@ def test_integration_simple(requests_mock) -> None:  # type: ignore
     assert mode == "manual"
 
     # Test flipr id not found
+    _LOGGER.debug("Now testing flipr id not found...")
     requests_mock.get(f"{FLIPR_API_URL}/modules", json=[])
 
     list_fliprs = client.search_flipr_ids()
