@@ -1,3 +1,9 @@
+```diff
+
+- The Flipr company is liquidated now :( and their cloud API does not work anymore so this project is archived.
+
+``` 
+
 # Flipr Python API REST Client
 
 Client Python pour l'API Flipr. | Python client for Flipr API.
